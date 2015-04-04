@@ -1,0 +1,37 @@
+H1 {
+	text-align: center;
+	color: white;
+	font-size: 1000%;
+	text-align: center;
+	margin-top: 6%;
+	font-family: 'Poiret One', cursive;
+}	
+h2 {
+	text-align: center;
+	color: white;
+	text-align: center;
+	top: 40%;
+	margin-top: 10%;
+	font-family: 'Quicksand';
+}
+
+body {
+	background-color: black;
+	background-blend-mode: overlay;
+}
+
+button
+{
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: none;
+    padding: 10px 15px;
+    margin: 20px auto;
+    background-color: white;
+    cursor: pointer;
+	align-content: center;
+  	margin-top: 1%;
+	font-family: 'Quicksand';
+	
+}
