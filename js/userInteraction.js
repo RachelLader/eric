@@ -1,2 +1,4 @@
-Document.getElementById('userEntry').contentEditable = true
-console.log('yo')
+window.onload = function(e){ 
+    document.getElementById('userSays').contentEditable = true
+
+}
