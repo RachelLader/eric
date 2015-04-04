@@ -3,12 +3,15 @@
 
 
 
-Physijs.scripts.worker = '../physijs/physijs_worker.js';
-  Physijs.scripts.ammo = '../physijs/examples/js/ammo.js';
+Physijs.scripts.worker = './physijs/physijs_worker.js';
+  Physijs.scripts.ammo = '../js/physijs/ammo.js';
   
   var initScene, render, createShape,
     renderer, render_stats, physics_stats, scene, light, ground, ground_material, camera;
   
+
+
+
   initScene = function() {
     TWEEN.start();
     
@@ -37,7 +40,7 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
     // if(k!=null) k.appendChild( physics_stats.domElement );
 
     scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
-    scene.setGravity(new THREE.Vector3( 0, 0, 0 ));
+    scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
     scene.addEventListener(
       'update',
       function() {
@@ -52,7 +55,7 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
       1,
       1000
     );
-    camera.position.set( 60, 50, 60 );
+    camera.position.set( 60, 10, 60 );
     camera.lookAt( scene.position );
     scene.add( camera );
     
@@ -61,18 +64,27 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
     light.position.set( 20, 40, -15 );
     light.target.position.copy( scene.position );
     light.castShadow = true;
-    light.shadowCameraLeft = -60;
-    light.shadowCameraTop = -60;
-    light.shadowCameraRight = 60;
-    light.shadowCameraBottom = 60;
-    light.shadowCameraNear = 20;
-    light.shadowCameraFar = 200;
-    light.shadowBias = -.0001
+    // light.shadowCameraLeft = -60;
+    // light.shadowCameraTop = -60;
+    // light.shadowCameraRight = 60;
+    // light.shadowCameraBottom = 60;
+    // light.shadowCameraNear = 20;
+    // light.shadowCameraFar = 200;
+    // light.shadowBias = -.0001
     light.shadowMapWidth = light.shadowMapHeight = 2048;
     light.shadowDarkness = .7;
     scene.add( light );
+
+    light2 = new THREE.DirectionalLight( 0xFFFFFF );
+    light2.position.set( -30, -40, -15 );
+    light2.target.position.copy( scene.position );
+    light2.castShadow = true;
+
+    light2.shadowMapWidth = light2.shadowMapHeight = 2048;
+    light2.shadowDarkness = .1;
+    scene.add( light2 );
     
-    // Materials
+    // // Materials
     // ground_material = Physijs.createMaterial(
     //   new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( '../physijs/examples/images/rocks.jpg' ) }),
     //   .8, // high friction
@@ -90,36 +102,77 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
     // );
     // ground.receiveShadow = true;
     // scene.add( ground );
+
+    // Materials
+    ground_material = Physijs.createMaterial(
+      new THREE.MeshBasicMaterial( {color: 'black'},
+      .8, // high friction
+      .4 // low restitution
+    ));
+
     
-    // // Bumpers
-    // var bumper,
-    //   bumper_geom = new THREE.BoxGeometry(2, 1, 50);
+    // Ground
+    ground = new Physijs.BoxMesh(
+      new THREE.BoxGeometry(120, 1, 120),
+      //new THREE.PlaneGeometry(50, 50),
+      ground_material,
+      0 // mass
+    );
+    ground.receiveShadow = true;
+    ground.position.x = 0;
+    ground.position.y = -10;
+
+    ground.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+      scene.remove(other_object);
+    // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
+    });
+
+    scene.add( ground );
+
+  // var geometry = new Physijs.PlaneMesh( 20, 20, 20 );
+  // var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+  // var rightWall = new THREE.Mesh( geometry, material );
+  // rightWall.position.x = 20;
+  // rightWall.position.y = 10;
+  // scene.add( rightWall );
+
+  // var geometry = new Physijs.PlaneMesh( 20, 20, 20 );
+  // var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+  // var leftWall = new THREE.Mesh( geometry, material );
+  // rightWall.position.x = 20;
+  // rightWall.position.y = 30;
+  // scene.add( leftWall );
+
+    
+    // Bumpers
+    var bumper,
+      bumper_geom = new THREE.BoxGeometry(2, 120, 120);
+    
+    bumper = new Physijs.BoxMesh( bumper_geom, ground_material, 0, { restitution: .2 } );
+    bumper.position.y = 20;
+    bumper.position.x = -59;
+    bumper.receiveShadow = true;
+    bumper.castShadow = true;
+    scene.add( bumper );
     
     // bumper = new Physijs.BoxMesh( bumper_geom, ground_material, 0, { restitution: .2 } );
     // bumper.position.y = 1;
-    // bumper.position.x = -24;
+    // bumper.position.x = 34;
     // bumper.receiveShadow = true;
     // bumper.castShadow = true;
     // scene.add( bumper );
     
-    // bumper = new Physijs.BoxMesh( bumper_geom, ground_material, 0, { restitution: .2 } );
-    // bumper.position.y = 1;
-    // bumper.position.x = 24;
-    // bumper.receiveShadow = true;
-    // bumper.castShadow = true;
-    // scene.add( bumper );
+    bumper = new Physijs.BoxMesh( bumper_geom, ground_material, 0, { restitution: .2 } );
+    bumper.position.y = 20;
+    bumper.position.z = -59;
+    bumper.rotation.y = Math.PI / 2;
+    bumper.receiveShadow = true;
+    bumper.castShadow = true;
+    scene.add( bumper );
     
     // bumper = new Physijs.BoxMesh( bumper_geom, ground_material, 0, { restitution: .2 } );
     // bumper.position.y = 1;
-    // bumper.position.z = -24;
-    // bumper.rotation.y = Math.PI / 2;
-    // bumper.receiveShadow = true;
-    // bumper.castShadow = true;
-    // scene.add( bumper );
-    
-    // bumper = new Physijs.BoxMesh( bumper_geom, ground_material, 0, { restitution: .2 } );
-    // bumper.position.y = 1;
-    // bumper.position.z = 24;
+    // bumper.position.z = 34;
     // bumper.rotation.y = Math.PI / 2;
     // bumper.receiveShadow = true;
     // bumper.castShadow = true;
@@ -139,7 +192,7 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
   createShape = (function() {
     var addshapes = true,
       shapes = 0,
-      box_geometry = new THREE.BoxGeometry( 3, 3, 3 ),
+      box_geometry = new THREE.BoxGeometry( 2, 2, 2 ),
       sphere_geometry = new THREE.SphereGeometry( 1.5, 32, 32 ),
       cylinder_geometry = new THREE.CylinderGeometry( 2, 2, 1, 32 ),
       cone_geometry = new THREE.CylinderGeometry( 0, 2, 4, 32 ),
@@ -159,6 +212,27 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
     );
       
     doCreateShape = function() {
+
+//       var geom = new THREE.Geometry(); 
+// var v1 = new THREE.Vector3(0,0,0);
+// var v2 = new THREE.Vector3(0,500,0);
+// var v3 = new THREE.Vector3(0,500,500);
+
+// geom.vertices.push(v1);
+// geom.vertices.push(v2);
+// geom.vertices.push(v3);
+
+// geom.faces.push( new THREE.Face3( 0, 1, 2 ) );
+// geom.computeFaceNormals();
+
+// var object = new THREE.Mesh( geom, new THREE.MeshNormalMaterial() );
+
+// object.position.z = -100;//move a bit back - size of 500 is a bit big
+// object.rotation.y = -Math.PI * .5;//triangle is pointing in depth, rotate it -90 degrees on Y
+
+// scene.add(object);
+
+
       var shape, material = new THREE.MeshLambertMaterial({ opacity: 0, transparent: true });
       
       switch ( Math.floor(Math.random() * 1) ) {
@@ -205,9 +279,13 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
             material
           );
           break;
+
+        
       }
         
-      shape.material.color.setRGB( Math.random() * 100 / 100, Math.random() * 100 / 100, Math.random() * 100 / 100 );
+      shape.material.color.setRGB(0xFF, 0xFF, 0xFF);
+      
+
       shape.castShadow = true;
       shape.receiveShadow = true;
       
@@ -222,6 +300,21 @@ Physijs.scripts.worker = '../physijs/physijs_worker.js';
         Math.random() * Math.PI,
         Math.random() * Math.PI
       );
+
+      shape.setLinearVelocity(
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+        Math.random() * Math.PI
+      );
+
+      shape.setAngularVelocity(
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+        Math.random() * Math.PI
+      );
+
+
+
       
       if ( addshapes ) {
         shape.addEventListener( 'ready', createShape );

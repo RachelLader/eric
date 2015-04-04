@@ -87,24 +87,6 @@ var directionalLight = new THREE.DirectionalLight(0xffffff);
       directionalLight.position.set(1, 1, 1);
       scene.add(directionalLight);
  
-// directionalLight.target = cube;
-
-// create a point light
-// var pointLight =
-//   new THREE.PointLight(0xFFFFFF);
-
-// set its position
-// pointLight.position.x = 10;
-// pointLight.position.y = 50;
-// pointLight.position.z = 130;
-
-// add to the scene
-// scene.add(pointLight);
-
-
-// cube.position.x = 90;
-// cube.position.y = 100;
-// cube.position.z = 50;
 
 cube.position.set(0, 0, 0);
 cube2.position.set(70, 40, 50);
@@ -128,7 +110,7 @@ function animate() {
 }
 
 
-// draw!
+// dra !
 renderer.render(scene, camera);
 
 // // sphere geometry
