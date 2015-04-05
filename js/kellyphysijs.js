@@ -3,18 +3,14 @@
 
 
 
-Physijs.scripts.worker = './physijs/physijs_worker.js';
-  Physijs.scripts.ammo = '../js/physijs/ammo.js';
+Physijs.scripts.worker = './js/physijs/physijs_worker.js';
+  Physijs.scripts.ammo = './ammo.js';
   
   var initScene, render, createShape,
     renderer, render_stats, physics_stats, scene, light, ground, ground_material, camera;
-  
-
-
 
   initScene = function() {
     TWEEN.start();
-    
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMapEnabled = true;
@@ -24,20 +20,11 @@ Physijs.scripts.worker = './physijs/physijs_worker.js';
     // var k = document.getElementById( 'viewport' );
     // reif(k!=null) k.appendChild( renderer.domElement );
 
-
     render_stats = new Stats();
     render_stats.domElement.style.position = 'absolute';
     render_stats.domElement.style.top = '0px';
     render_stats.domElement.style.zIndex = 100;
     document.getElementById( 'viewport' ).appendChild( render_stats.domElement );
-    // if(k!=null) k.appendChild( render_stats.domElement );
-
-    physics_stats = new Stats();
-    physics_stats.domElement.style.position = 'absolute';
-    physics_stats.domElement.style.top = '50px';
-    physics_stats.domElement.style.zIndex = 100;
-    document.getElementById( 'viewport' ).appendChild( physics_stats.domElement );
-    // if(k!=null) k.appendChild( physics_stats.domElement );
 
     scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
     scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
@@ -45,7 +32,6 @@ Physijs.scripts.worker = './physijs/physijs_worker.js';
       'update',
       function() {
         scene.simulate( undefined, 2 );
-        physics_stats.update();
       }
     );
     
@@ -105,7 +91,7 @@ Physijs.scripts.worker = './physijs/physijs_worker.js';
 
     // Materials
     ground_material = Physijs.createMaterial(
-      new THREE.MeshBasicMaterial( {color: 'black'},
+      new THREE.MeshBasicMaterial( {color: 'red'},
       .8, // high friction
       .4 // low restitution
     ));
@@ -113,7 +99,7 @@ Physijs.scripts.worker = './physijs/physijs_worker.js';
     
     // Ground
     ground = new Physijs.BoxMesh(
-      new THREE.BoxGeometry(120, 1, 120),
+      new THREE.CubeGeometry(120, 1, 120),
       //new THREE.PlaneGeometry(50, 50),
       ground_material,
       0 // mass
@@ -212,26 +198,6 @@ Physijs.scripts.worker = './physijs/physijs_worker.js';
     );
       
     doCreateShape = function() {
-
-//       var geom = new THREE.Geometry(); 
-// var v1 = new THREE.Vector3(0,0,0);
-// var v2 = new THREE.Vector3(0,500,0);
-// var v3 = new THREE.Vector3(0,500,500);
-
-// geom.vertices.push(v1);
-// geom.vertices.push(v2);
-// geom.vertices.push(v3);
-
-// geom.faces.push( new THREE.Face3( 0, 1, 2 ) );
-// geom.computeFaceNormals();
-
-// var object = new THREE.Mesh( geom, new THREE.MeshNormalMaterial() );
-
-// object.position.z = -100;//move a bit back - size of 500 is a bit big
-// object.rotation.y = -Math.PI * .5;//triangle is pointing in depth, rotate it -90 degrees on Y
-
-// scene.add(object);
-
 
       var shape, material = new THREE.MeshLambertMaterial({ opacity: 0, transparent: true });
       
