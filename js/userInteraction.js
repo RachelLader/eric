@@ -1,4 +1,6 @@
-$(document).ready( function(event){ 
+var engine,es;
+$(document).ready(function(e){ 
+    console.log('yo')
     document.getElementById('userSays').contentEditable = true;
     initEliza()
     userTxtObj = $('#userSays')
@@ -15,6 +17,14 @@ $(document).ready( function(event){
         	})
         }
     })
+
+    //EMOENGINE
+    engine = EmoEngine.instance()
+    console.log(engine)
+    es = new EmoState();
+
+    engine.Connect()
+    updateEmoEngine()
 });
 
 var eliza
@@ -39,6 +49,7 @@ function elizaStep(str,target) {
 }
 var TTS_URL = "https://t2s.p.mashape.com/speech/"
 var context = new AudioContext();
+
 function sayEricLine(str){
     var req = new XMLHttpRequest();
     console.log(str)
@@ -58,3 +69,65 @@ function sayEricLine(str){
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
     req.send(args)
 }
+
+var lastResponseIndex = -1
+function updateEmoEngine()
+{   
+    engine.ProcessEvents(500);
+    console.log("Frustration: "+es.AffectivGetFrustrationScore())
+    console.log("Excitement: "+es.AffectivGetExcitementShortTermScore())
+    console.log("Valence: "+ es.AffectivGetValenceScore())
+    if (es.AffectivGetFrustrationScore() > .8 && lastResponseIndex !== 0){
+        console.log("Frustration: "+es.AffectivGetFrustrationScore())
+        triggerResponse_Frustrated()
+        lastResponseIndex = 0
+    }
+    else if (es.AffectivGetExcitementShortTermScore() > .8 && lastResponseIndex !== 1){
+        console.log("Excitement: "+es.AffectivGetExcitementShortTermScore())
+        triggerResponse_Excited()
+        lastResponseIndex = 1
+    }
+    else if (es.AffectivGetValenceScore() > .7 && lastResponseIndex !== 2){
+        console.log("Valence: "+ es.AffectivGetValenceScore())
+        triggerResponse_Happy()
+        lastResponseIndex = 2
+    }
+    setTimeout("updateEmoEngine()",50);
+}
+
+function triggerResponse_Excited(){
+    eliza.reset()
+    ericTxtObj = $('#ericSays')
+    ericTxtObj.fadeOut(400,function(){
+        ericTxtObj.text("I've noticed you're excited.  Care to share? (:")
+        ericTxtObj.focus()
+        ericTxtObj.fadeIn(400)
+        sayEricLine("I've noticed you're excited.  Care to share?")
+    })
+}
+
+function triggerResponse_Frustrated(){
+        eliza.reset()
+        ericTxtObj = $('#ericSays')
+        ericTxtObj.fadeOut(400,function(){
+            ericTxtObj.text("I've noticed you're frustrated.  Want to talk about it? :/")
+            ericTxtObj.focus()
+            ericTxtObj.fadeIn(400)
+            sayEricLine("I've noticed you're frustrated. What to talk about it?")
+        })
+}
+
+function triggerResponse_Happy(){
+        eliza.reset()
+        ericTxtObj = $('#ericSays')
+        ericTxtObj.fadeOut(400,function(){
+            ericTxtObj.text("I've noticed you're feeling good.  Give me the deets (: (:")
+            ericTxtObj.focus()
+            ericTxtObj.fadeIn(400)
+            sayEricLine("I've noticed you're feeling good. Give me the deets!")
+        })
+}
+
+
+
+

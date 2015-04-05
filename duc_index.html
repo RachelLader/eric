@@ -17,14 +17,25 @@
         <script type="text/javascript" src= "js/physijs/stats.js"></script>
         <script type="text/javascript" src= "js/physijs/tween.js"></script>
         <script type="text/javascript" src= "js/physijs/physi.js"></script>
-        <!--DUC's CODE-->
+        <!--EMOTIVE-->
+        <object id="plugin0" type="application/x-emotivlifesciences" width="0" height="0">
+            <param name="onload" value="pluginLoaded" />
+        </object>
+        <script type="text/javascript">
+        function ELSPlugin(){
+            return document.getElementById('plugin0')
+        }
+        </script>
+        <script type="text/javascript" src = "js/plugin/EdkDll.js"></script>
+        <script type="text/javascript" src = "js/plugin/EmoState.js"></script>
+        <script type="text/javascript" src = "js/plugin/EmoEngine.js"></script>
         
     </head>
     <body style='margin: 0px; overflow: hidden;'>
         <script type="text/javascript" src="js/userInteraction.js"></script>
         <script type="text/javascript" src="js/threeLeapInteractionScript.js"></script>
         <div id="container">
-	    	<h1 class = "text" id="ericSays">Hello, how can I help you today?</h1>
+	    	<h1 class = "text" id="ericSays">How do you do? Please tell me your problem.</h1>
     		<h1 class = "text" id="userSays"></h1>
 		</div>
     </body>
