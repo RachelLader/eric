@@ -38,8 +38,8 @@ function elizaStep(str,target) {
 	//elizaLines.push(rpl);
 }
 var TTS_URL = "https://t2s.p.mashape.com/speech/"
+var context = new AudioContext();
 function sayEricLine(str){
-    var context = new AudioContext();
     var req = new XMLHttpRequest();
     console.log(str)
     console.log(encodeURI(str))
