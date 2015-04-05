@@ -1,13 +1,11 @@
-window.onload = function() {
-  $("#landingbutton").click(function(e) {
-  e.preventDefault()
-  $("#landingpage").fadeOut(1600);
-  $("#userSays").focus();
-  sayEricLine("How can I help you?");
-  });
-}
+console.log("reached speakfirst")
 
+$(document).ready( function(event){ 
+    sayEricLine("Hello, my name is ERIC. Click 'talk' to begin your psychotherapy session.")
+});
 
+    
+    
 var TTS_URL = "https://t2s.p.mashape.com/speech/"
 var context = new AudioContext();
 function sayEricLine(str){
@@ -28,4 +26,4 @@ function sayEricLine(str){
     req.setRequestHeader("X-Mashape-Key","5AmPnlra6YmshRKeIg9EhGMiqLPJp14k775jsnsDgfiv5yb2u4")
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
     req.send(args)
-}   
+}    
