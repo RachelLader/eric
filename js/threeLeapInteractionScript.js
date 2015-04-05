@@ -68,8 +68,7 @@ Physijs.scripts.ammo = './ammo.js';
     container.style.left       = '0px';
     container.style.background = '#000';
 
-    document.body.appendChild( container );
-
+    $("#ducindex").append( container );
 
     // Getting the stats in the right position
     stats = new Stats();
@@ -185,7 +184,7 @@ Physijs.scripts.ammo = './ammo.js';
         geo = new Physijs.SphereMesh( geometries[j] , geo_material);
         geo.mass = 1000
         geo.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-          console.log(geo)
+          //console.log(geo)
           if (!(other_object instanceof Physijs.SphereMesh)){
             var randomIndex = Math.floor(Math.random()*geometries.length)
             var new_geo_material = Physijs.createMaterial(fingerMaterials[randomIndex],.5,.5)

@@ -1,4 +1,4 @@
-window.onload = function(e){ 
+$(document).ready( function(event){ 
     document.getElementById('userSays').contentEditable = true;
     initEliza()
     userTxtObj = $('#userSays')
@@ -15,7 +15,7 @@ window.onload = function(e){
         	})
         }
     })
-}
+});
 
 var eliza
 function initEliza(){
