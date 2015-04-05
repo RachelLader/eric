@@ -2,6 +2,7 @@ console.log("reached speakfirst")
 
 $(document).ready( function(event){ 
     sayEricLine("Hello, my name is ERIC. Click the puzzle to begin your psychotherapy session.")
+
 });
 
     
