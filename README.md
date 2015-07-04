@@ -1,2 +1,2 @@
 # eric
-Eliza based nlp psycho analyist
+Eliza based nlp psycho analyst
